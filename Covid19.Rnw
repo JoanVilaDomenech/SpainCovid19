@@ -1,0 +1,269 @@
+\documentclass[12pt]{beamer}
+\usepackage{beamerthemesplit}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphics}
+\usepackage{graphicx}             
+\usepackage{epsfig}
+\usetheme[hideothersubsections=TRUE,width=0cm]{Hannover}
+\usecolortheme{seahorse}
+\useoutertheme{infolines}
+\usepackage{amssymb,amsmath}
+%\usepackage{Sweave}
+\usepackage{multicol}
+\usepackage{ctable}
+\setbeamertemplate{items}[ball]
+\newcommand{\Rlogo}{\protect\includegraphics[height=1.6ex,keepaspectratio]{/Users/jvila/Dropbox/cursoR/fig/Rlogo.pdf}}
+
+\title[Análisis y manejo de datos con \Rlogo]
+{\textbf{Introducción al análisis y manejo de datos con el programa \Rlogo} \\ \emph{Tranformaciones}}
+\author[Isaac Subirana \& Joan Vila]{\textbf{Isaac Subirana \& Joan Vila \\
+\scriptsize
+\texttt{isubirana@imim.es}  \& \texttt{jvila@imim.es} }}
+\normalsize
+\color{black}
+\institute[EGEC/CARIN]{
+Cardiovascular epidemiology and genetics\\
+Cardiovascular risk and nutrition\\
+(IMIM-Institut Hospital del Mar d'Investigacions Mèdiques)}
+\date[Mayo 2019]{IMIM \\ Mayo 2019}
+
+\begin{document}
+
+
+\begin{frame}
+\titlepage                   
+\end{frame}
+
+
+<<echo=FALSE, results='hide', warning=FALSE, error=FALSE, message=FALSE, fig.show='hide'>>=
+rm(list=ls())
+options(width=80)
+source("./input/MakingFig.R")
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%#################################################################
+\begin{frame} [containsverbatim]
+<<echo=FALSE, results='hide', warning=FALSE, error=FALSE, message=FALSE, fig.show='hide'>>=
+library(curl)
+x <- read.csv( curl("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"))
+startdate <- "2020-02-01"
+# selecting Spain
+s <- subset(x, Country.Region=="Spain")
+dat <- data.frame(t(s))
+names(dat) <- "CumCases"
+dat$date <- as.Date(sub("X", "", rownames(dat)), format="%m.%d.%y")
+dat <- dat[!is.na(dat$date), ]
+# change factor to numeric
+dat$CumCases <- as.numeric(as.character(dat$CumCases))
+# subseting since 1st date
+dat <- subset(dat, date >=startdate)
+# Daily deaths
+dat$DailyCases <- with(dat, CumCases-c(0, dat$CumCases[1:nrow(dat)-1]))
+dat$id <- seq(1, nrow(dat))
+dat[, c("date", "DailyCases", "CumCases")]
+@
+\begin{verbatim}
+      date DailyCases CumCases
+2020-02-01          1        1
+2020-02-02          0        1
+2020-02-03          0        1
+     .              .        .
+     .              .        .
+2020-02-08          0        1
+2020-02-09          1        2
+2020-02-10          0        2
+     .              .        .
+     .              .        .
+2020-02-24          0        2
+2020-02-25          4        6
+2020-02-26          7       13
+2020-02-27          2       15
+2020-02-28         17       32
+\end{verbatim}
+\end{frame}
+
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/fig01.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/fig02.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/fig03.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/fig04.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/fig05.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[]{./fig/fig06.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[]{./fig/JHopkins01.png}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/JHopkins02.png}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+Possible outcomes:
+\begin{itemize}
+\item Confirmed cases
+\item {\color{red} \textbf{Deaths}}
+\item Hospital discharges
+\item Hospital Admissions
+\item ICU Admissions
+\item etc.
+\end{itemize}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\begin{verbatim}
+      date DailyDeaths  CumDeath
+2020-03-02           0         0
+2020-03-03           1         1
+2020-03-04           1         2
+2020-03-05           1         3
+2020-03-06           2         5
+2020-03-07           5        10
+2020-03-08           7        17
+2020-03-09          11        28
+2020-03-10           7        35
+2020-03-11          19        54
+     .              .        .
+     .              .        .
+\end{verbatim}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/fig07.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/fig08.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/fig09.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/idescat02.png}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+
+\begin{frame} [containsverbatim]
+\setkeys{Gin}{width=1.0\textwidth}
+\begin{figure}[H]
+\begin{center}
+%\label{FlowClear}
+\includegraphics[]{./fig/fig10.jpg}
+\end{center}
+\end{figure}
+\end{frame}
+%#################################################################
+\begin{frame} [containsverbatim]
+Links to:
+\begin{itemize}
+\item {\color{blue} \href{https://www.idescat.cat/indicadors/?id=anuals&n=13259&tema=salut&lang=en}{\textit{IDESCAT}}}
+\item {\color{blue} \href{https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series}{\textit{CSSE at Johns Hopkins University Time Series}}}
+\end{itemize}
+\end{frame}
+\end{document}

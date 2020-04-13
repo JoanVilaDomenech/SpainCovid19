@@ -147,7 +147,9 @@ francePob <- 67076000
 ukPob <- 67886004
 italyPob <- 60317116  
 usPob <- 325719178
-  
+catPob <- 7619494
+nocatPob <- spainPob - catPob
+
 ################################################################################
 ################################################################################
 ################################################################################
@@ -264,7 +266,7 @@ datall <- merge(datall, FR[, c("date", "CumDeathsFR", "DailyDeathsFR", "DailyAdj
 datall <- merge(datall, UK[, c("date", "CumDeathsUK", "DailyDeathsUK", "DailyAdjUK")], by="date", all.x = TRUE)
 datall <- merge(datall, IT[, c("date", "CumDeathsIT", "DailyDeathsIT", "DailyAdjIT")], by="date", all.x = TRUE)
 datall <- merge(datall, US[, c("date", "CumDeathsUS", "DailyDeathsUS", "DailyAdjUS")], by="date", all.x = TRUE)
-  
+datall <- datall[1:nrow(datall)-1, ]  
 ################################################################################
 jpeg(file="./fig/fig07.jpg", width = 480*1.5, height = 480)
 par(las=1, mar= c(5, 3, 2, 4) + 0.1, mfrow= c(1, 1), xpd = FALSE)
@@ -356,13 +358,10 @@ SP <- merge(SP, CAT, by="date", all.x =TRUE)
 SP$CumDeathsCAT <- ifelse(is.na(SP$CumDeathsCAT), 0, SP$CumDeathsCAT)
 SP$DailyDeathsCAT <- ifelse(is.na(SP$DailyDeathsCAT), 0, SP$DailyDeathsCAT)
 SP$DailyDeathsNoCAT <- with(SP, DailyDeaths-DailyDeathsCAT)
-catPob <- 7619494
-SP$DailyAdjNOCAT <- round(SP$DailyDeathsNoCAT*catPob/spainPob)
+SP$DailyAdjNOCAT <- round(SP$DailyDeathsNoCAT*catPob/nocatPob)
 SP$id <- seq(1, nrow(SP))
 SP$CumDeathsNOCAT <- with(SP, CumDeaths - CumDeathsCAT)
 SP <- subset(SP, CumDeaths>0)
-
-
 
 par(las=1, mar= c(5, 3, 2, 4) + 0.1, mfrow= c(1, 1), xpd = FALSE)
 with(SP, plot(date, DailyDeathsCAT, type ="l", axes = FALSE, ylab="", 
@@ -381,7 +380,7 @@ text(max(SP$date), SP$DailyAdjNOCAT[nrow(SP)], "No-CAT", pos = 4, col = "turquoi
 legend(min(SP$date)-1, max(SP$DailyDeathsCAT)*1.12, bty="n", 
        title ="Cummulated deaths", cex = 0.8, title.adj = 0.1, 
        c(paste("CAT: ", SP$CumDeathsCAT[nrow(SP)], sep =""),
-       paste("No-CAT: ", round(SP$CumDeathsNOCAT[nrow(SP)] * catPob/spainPob), "(*) / real = ",
+       paste("No-CAT: ", round(SP$CumDeathsNOCAT[nrow(SP)] * catPob/nocatPob), "(*) / real = ",
              SP$CumDeathsNOCAT[nrow(SP)], sep ="")
        )
        )

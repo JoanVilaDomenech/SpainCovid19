@@ -1,6 +1,6 @@
 \documentclass[12pt]{beamer}
 \usepackage{beamerthemesplit}
-\usepackage[spanish]{babel}
+\usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{graphics}
 \usepackage{graphicx}             
@@ -15,18 +15,15 @@
 \setbeamertemplate{items}[ball]
 \newcommand{\Rlogo}{\protect\includegraphics[height=1.6ex,keepaspectratio]{/Users/jvila/Dropbox/cursoR/fig/Rlogo.pdf}}
 
-\title[Análisis y manejo de datos con \Rlogo]
-{\textbf{Introducción al análisis y manejo de datos con el programa \Rlogo} \\ \emph{Tranformaciones}}
-\author[Isaac Subirana \& Joan Vila]{\textbf{Isaac Subirana \& Joan Vila \\
+\title[Spain/Catalonia COVID-19 Deaths]
+{\textbf{How Spain/Catalonia is affected by COVID-19} \\ \emph{- Deaths Analysis -}}
+\author[Joan Vila]{\textbf{Joan Vila \\
 \scriptsize
-\texttt{isubirana@imim.es}  \& \texttt{jvila@imim.es} }}
+\texttt{joanviladomenech@gmail.com} }}
 \normalsize
 \color{black}
-\institute[EGEC/CARIN]{
-Cardiovascular epidemiology and genetics\\
-Cardiovascular risk and nutrition\\
-(IMIM-Institut Hospital del Mar d'Investigacions Mèdiques)}
-\date[Mayo 2019]{IMIM \\ Mayo 2019}
+\institute[]{}
+\date[]{\today}
 
 \begin{document}
 
@@ -264,6 +261,7 @@ Links to:
 \begin{itemize}
 \item {\color{blue} \href{https://www.idescat.cat/indicadors/?id=anuals&n=13259&tema=salut&lang=en}{\textit{IDESCAT}}}
 \item {\color{blue} \href{https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series}{\textit{CSSE at Johns Hopkins University Time Series}}}
+\item {\color{blue} \href{https://github.com/JoanVilaDomenech/SpainCovid19}{\textit{github code}}}
 \end{itemize}
 \end{frame}
 \end{document}
